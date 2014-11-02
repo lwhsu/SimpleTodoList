@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 public class TodoActivity extends Activity {
@@ -33,4 +35,10 @@ public class TodoActivity extends Activity {
     	//getMenuInflater().inflate(android.R.menu.todo, menu);
     	return true;
     }
+
+	public void addTodoItem(View v) {
+		EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
+		itemsAdapter.add(etNewItem.getText().toString());
+		etNewItem.setText("");
+	}
 }

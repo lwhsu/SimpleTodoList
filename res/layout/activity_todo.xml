@@ -32,6 +32,7 @@
         android:layout_alignParentBottom="@+id/etNewItem"
         android:layout_alignBottom="@+id/etNewItem"
         android:layout_alignRight="@+id/lvItems"
+        android:onClick="addTodoItem"
         android:text="Add" />
 
 </RelativeLayout>
