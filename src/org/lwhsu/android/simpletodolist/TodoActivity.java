@@ -1,6 +1,10 @@
 package org.lwhsu.android.simpletodolist;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import org.apache.commons.io.FileUtils;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -24,11 +28,13 @@ public class TodoActivity extends Activity {
         setContentView(R.layout.activity_todo);
         
         lvItems = (ListView) findViewById(R.id.lvItems);
-        items = new ArrayList<String>();
+        readItems();
+
         itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
-        items.add("First Item");
-        items.add("Second Item");
+
+        //items.add("First Item");
+        //items.add("Second Item");
 
         setupListViewListener();
 	}
@@ -40,6 +46,7 @@ public class TodoActivity extends Activity {
 					int position, long rowId) {
 				items.remove(position);
 				itemsAdapter.notifyDataSetChanged();
+				saveItems();
 				return true;
 			}
 		});
@@ -56,5 +63,27 @@ public class TodoActivity extends Activity {
 		EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
 		itemsAdapter.add(etNewItem.getText().toString());
 		etNewItem.setText("");
+		saveItems();
+	}
+
+	public void readItems() {
+		File filesDir = getFilesDir();
+		File todoFile = new File(filesDir, "todo.txt");
+		try {
+			items = new ArrayList<String>(FileUtils.readLines(todoFile));
+		} catch (IOException e) {
+			items = new ArrayList<String>();
+			e.printStackTrace();
+		}
+	}
+
+	public void saveItems() {
+		File filesDir = getFilesDir();
+		File todoFile = new File(filesDir, "todo.txt");
+		try {
+			FileUtils.writeLines(todoFile, items);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }
